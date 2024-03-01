@@ -16,20 +16,18 @@ const XSpellCheck = () => {
     const inputText = event.target.value.toLowerCase();
     const words = inputText.split(/\s+/);
     let correctedText = inputText;
-
+    let correctionMessage = '';
+  
     for (let i = 0; i < words.length; i++) {
       if (customDictionary.hasOwnProperty(words[i])) {
         correctedText = correctedText.replace(new RegExp(words[i], 'gi'), customDictionary[words[i]]);
-        setCorrection(`Did you mean: ${customDictionary[words[i]]}?`);
-        break;
-      } else {
-        setCorrection('');
+        correctionMessage += `Did you mean: ${customDictionary[words[i]]}? `;
       }
     }
-
+  
     setText(correctedText);
+    setCorrection(correctionMessage);
   };
-
   return (
     <div className="centered-container">
       <h1>Spell Check and Auto-Correction</h1>
