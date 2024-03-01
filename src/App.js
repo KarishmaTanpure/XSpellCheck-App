@@ -20,11 +20,13 @@ const XSpellCheck = () => {
     let correctionMessage = '';
     
     for (let i = 0; i < words.length; i++) {
-      if (customDictionary.hasOwnProperty(words[i])) {
-        const correctedWord = customDictionary[words[i]];
-        const originalWordRegExp = new RegExp(`\\b${words[i]}\\b`, 'gi');
+      const originalWord = words[i];
+      const lowerCaseWord = originalWord.toLowerCase();
+      if (customDictionary.hasOwnProperty(lowerCaseWord)) {
+        const correctedWord = customDictionary[lowerCaseWord];
+        const originalWordRegExp = new RegExp(`\\b${originalWord}\\b`, 'gi');
         correctedText = correctedText.replace(originalWordRegExp, correctedWord); // Replace with corrected word while preserving original case
-        correctionMessage += `Did you mean: ${correctedWord}?`;
+        correctionMessage += `Did you mean: ${correctedWord}? `;
       }
     }
     
