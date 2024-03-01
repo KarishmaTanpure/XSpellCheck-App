@@ -1,25 +1,46 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import './index.css'; 
 
-function App() {
+const customDictionary = {
+  teh: "the",
+  wrok: "work",
+  fot: "for",
+  exampl: "example"
+};
+
+const XSpellCheck = () => {
+  const [text, setText] = useState('');
+  const [correction, setCorrection] = useState('');
+
+  const handleInputChange = (event) => {
+    const inputText = event.target.value.toLowerCase();
+    const words = inputText.split(/\s+/);
+    let correctedText = inputText;
+
+    for (let i = 0; i < words.length; i++) {
+      if (customDictionary.hasOwnProperty(words[i])) {
+        correctedText = correctedText.replace(new RegExp(words[i], 'gi'), customDictionary[words[i]]);
+        setCorrection(`Did you mean: ${customDictionary[words[i]]}?`);
+        break;
+      } else {
+        setCorrection('');
+      }
+    }
+
+    setText(correctedText);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="centered-container">
+      <h1>Spell Check and Auto-Correction</h1>
+      <textarea 
+        value={text} 
+        onChange={handleInputChange} 
+        placeholder="Enter Text..." 
+      />
+      {correction && <div>{correction}</div>}
     </div>
   );
-}
+};
 
-export default App;
+export default XSpellCheck;
