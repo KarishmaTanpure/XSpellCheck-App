@@ -13,27 +13,24 @@ const XSpellCheck = () => {
   const [correction, setCorrection] = useState('');
 
   const handleInputChange = (event) => {
-    const inputText = event.target.value; // Preserve original case
-    const lowerCaseInputText = inputText.toLowerCase(); // Convert to lowercase for comparison
-    const words = lowerCaseInputText.split(/\s+/);
-    let correctedText = inputText; // Preserve original case
+    const inputText = event.target.value;
+    const words = inputText.split(/\s+/);
     let correctionMessage = '';
-    
+
     for (let i = 0; i < words.length; i++) {
-      const originalWord = words[i];
-      const lowerCaseWord = originalWord.toLowerCase();
-      if (customDictionary.hasOwnProperty(lowerCaseWord)) {
-        const correctedWord = customDictionary[lowerCaseWord];
-        const originalWordRegExp = new RegExp(`\\b${originalWord}\\b`, 'gi');
-        correctedText = correctedText.replace(originalWordRegExp, correctedWord); // Replace with corrected word while preserving original case
-        correctionMessage += `Did you mean: ${correctedWord}? `;
+      const originalWord = words[i].toLowerCase(); 
+      if (customDictionary.hasOwnProperty(originalWord)) {
+        const correctedWord = customDictionary[originalWord];
+        correctionMessage = `Did you mean: ${correctedWord}?`;
+        setText(inputText); 
+        setCorrection(correctionMessage); 
+        return; 
       }
     }
     
-    setText(correctedText);
-    setCorrection(correctionMessage.trim());
-  };
-  
+    setCorrection('');
+    setText(inputText); 
+  }; 
   return (
     <div className="centered-container">
       <h1>Spell Check and Auto-Correction</h1>
